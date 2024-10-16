@@ -1,0 +1,8 @@
+msgid "plugins.generic.partnerLogos.displayName"
+msgstr "Partner Logos"
+
+msgid "plugins.generic.partnerLogos.description"
+msgstr "Upload partner logos to the publisher library and display them on your site."
+
+msgid "plugins.generic.partnerLogos.fileType"
+msgstr "Partner Logos"
