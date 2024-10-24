@@ -1,16 +1,5 @@
 {if $partnerLogos|count}
   <style type="text/css">
-    .pl-partner-logos {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .pl-partner-logo {
-      height: 8rem;
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
     .pl-partner-logo-img {
       max-width: 100%;
       max-height: 100%;
@@ -24,24 +13,20 @@
     .pl-partner-logo-link:focus-visible {
       outline: 2px solid currentColor;
     }
-    @media (min-width: 768px) {
-      .pl-partner-logos {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .pl-partner-logo {
-        padding: 2rem 3rem;
-        height: 10rem;
-      }
+    .pl-partner-logos {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
     }
-    @media (min-width: 1280px) {
-      .pl-partner-logos {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-    @media (min-width: 1536px) {
-      .pl-partner-logos {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
+    .pl-partner-logo {
+      flex: 0 0 16rem;
+      max-height: 10rem;
+      height: 10rem;
+      max-width: 50%;
+      width: 100%;
+      padding: 2rem;
+      display: grid;
+      place-items: center;
     }
   </style>
   <div class="pl-partner-logos">
