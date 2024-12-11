@@ -174,7 +174,6 @@ class PartnerLogosPlugin extends GenericPlugin
                 $form->fields,
                 array_keys($form->fields)
             );
-            error_log(print_r($form, true));
         });
 
         return false;
