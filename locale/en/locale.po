@@ -6,3 +6,6 @@ msgstr "Upload partner logos to the publisher library and display them on your s
 
 msgid "plugins.generic.partnerLogos.fileType"
 msgstr "Partner Logos"
+
+msgid "plugins.generic.partnerLogos.insertContent.description"
+msgstr "Show logos uploaded to Partner Logos in the Publisher Library."

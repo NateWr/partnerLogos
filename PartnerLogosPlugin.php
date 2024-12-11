@@ -1,12 +1,22 @@
 <?php
 
+namespace APP\plugins\generic\partnerLogos;
+
+use APP\core\Application;
+use APP\template\TemplateManager;
 use PKP\components\forms\context\PKPAppearanceAdvancedForm;
 use PKP\components\forms\context\PKPAppearanceSetupForm;
 use PKP\components\forms\context\PKPMastheadForm;
+use PKP\components\forms\Field;
+use PKP\components\forms\FieldPreparedContent;
 use PKP\components\forms\FieldRichTextarea;
 use PKP\components\forms\FormComponent;
-
-import('lib.pkp.classes.plugins.GenericPlugin');
+use PKP\context\Context;
+use PKP\context\LibraryFile;
+use PKP\context\LibraryFileDAO;
+use PKP\db\DAORegistry;
+use PKP\plugins\GenericPlugin;
+use PKP\plugins\Hook;
 
 class PartnerLogosPlugin extends GenericPlugin
 {
@@ -29,12 +39,12 @@ class PartnerLogosPlugin extends GenericPlugin
         if (!parent::register($category, $path, $mainContextId)) {
             return false;
         }
-        HookRegistry::register('PublisherLibrary::types::names', [$this, 'addFileTypeName']);
-        HookRegistry::register('PublisherLibrary::types::titles', [$this, 'addFileTypeTitle']);
-        HookRegistry::register('PublisherLibrary::types::suffixes', [$this, 'addFileTypeSuffix']);
-        HookRegistry::register('Form::config::before', [$this, 'addPreparedContent']);
-        HookRegistry::register('TemplateManager::fetch', [$this, 'addPreparedContentToNavItem']);
-        HookRegistry::register('TemplateManager::display', [$this, 'renderLogosInTemplates']);
+        Hook::add('PublisherLibrary::types::names', [$this, 'addFileTypeName']);
+        Hook::add('PublisherLibrary::types::titles', [$this, 'addFileTypeTitle']);
+        Hook::add('PublisherLibrary::types::suffixes', [$this, 'addFileTypeSuffix']);
+        Hook::add('Form::config::before', [$this, 'addPreparedContent']);
+        Hook::add('TemplateManager::fetch', [$this, 'addPreparedContentToNavItem']);
+        Hook::add('TemplateManager::display', [$this, 'renderLogosInTemplates']);
 
         return true;
     }
@@ -77,7 +87,7 @@ class PartnerLogosPlugin extends GenericPlugin
         static $files = [];
 
         if (!count($files)) {
-            /* @var $libraryFileDao LibraryFileDAO */
+            /** @var LibraryFileDAO $libraryFileDao */
             $libraryFileDao = DAORegistry::getDAO('LibraryFileDAO');
             $files = collect($libraryFileDao->getByContextId($contextId, self::LIBRARY_FILE_TYPE_PARTNER)->toArray())
                 ->filter(fn(LibraryFile $libraryFile) => $libraryFile->getPublicAccess())
@@ -135,15 +145,36 @@ class PartnerLogosPlugin extends GenericPlugin
             if (!is_a($form, $targetField['form'])) {
                 return;
             }
-            foreach ($form->fields as $field) {
-                if (!is_a($field, FieldRichTextarea::class) || $field->name !== $targetField['field']) {
-                    continue;
-                }
-                if (!isset($field->preparedContent) && !is_array($field->preparedContent)) {
-                    $field->preparedContent = [];
-                }
-                $field->preparedContent[self::VARIABLE] = $this->getPlaceholderLabel();
-            }
+            $form->fields = array_map(
+                function(Field $field, int $i) use ($targetField) {
+                    if (!is_a($field, FieldRichTextarea::class) || $field->name !== $targetField['field']) {
+                        return $field;
+                    }
+
+                    /**
+                     * Convert to a FieldPreparedContent so that we can
+                     * add the Insert Content button
+                     */
+                    $properties = get_object_vars($field);
+                    unset($properties['component']);
+                    $newField = new FieldPreparedContent($field->name, $properties);
+
+                    if (!isset($newField->preparedContent) && !is_array($newField->preparedContent)) {
+                        $newField->preparedContent = [];
+                    }
+
+                    $newField->preparedContent[] = [
+                        'key' => self::VARIABLE,
+                        'description' => __('plugins.generic.partnerLogos.insertContent.description'),
+                        'value' => '{$' . self::VARIABLE . '}',
+                    ];
+
+                    return $newField;
+                },
+                $form->fields,
+                array_keys($form->fields)
+            );
+            error_log(print_r($form, true));
         });
 
         return false;
@@ -164,7 +195,7 @@ class PartnerLogosPlugin extends GenericPlugin
 
         $templateMgr->assign([
             'allowedVariables' => array_merge(
-                (array) $templateMgr->get_template_vars('allowedVariables'),
+                (array) $templateMgr->getTemplateVars('allowedVariables'),
                 [
                     self::VARIABLE => $this->getPlaceholderLabel(),
                 ]
@@ -186,7 +217,7 @@ class PartnerLogosPlugin extends GenericPlugin
         $templateMgr = $args[0];
         $template = $args[1];
 
-        $context = $templateMgr->get_template_vars('currentContext');
+        $context = $templateMgr->getTemplateVars('currentContext');
         if (!$context) {
             return false;
         }
@@ -246,7 +277,7 @@ class PartnerLogosPlugin extends GenericPlugin
 
         // We need to update the $pageFooter variable in the
         // TemplateManager, because it was already assigned.
-        $pageFooter = (string) $templateMgr->get_template_vars('pageFooter');
+        $pageFooter = (string) $templateMgr->getTemplateVars('pageFooter');
         if (str_contains($pageFooter, $this->getPlaceholder())) {
             $templateMgr->assign('pageFooter', $this->renderLogos($pageFooter, $context));
         }
@@ -261,7 +292,7 @@ class PartnerLogosPlugin extends GenericPlugin
      */
     protected function modifyCustomNavItem(Context $context, TemplateManager $templateMgr): void
     {
-        $content = (string) $templateMgr->get_template_vars('content');
+        $content = (string) $templateMgr->getTemplateVars('content');
         if (str_contains($content, $this->getPlaceholder())) {
             $templateMgr->assign('content', $this->renderLogos($content, $context));
         }
