@@ -135,6 +135,7 @@ class PartnerLogosPlugin extends GenericPlugin
         }
 
         $targetFields = collect([
+            ['form' => PKPMastheadForm::class, 'field' => 'editorialHistory'],
             ['form' => PKPMastheadForm::class, 'field' => 'about'],
             ['form' => PKPAppearanceSetupForm::class, 'field' => 'pageFooter'],
             ['form' => PKPAppearanceAdvancedForm::class, 'field' => 'additionalHomeContent'],
@@ -259,6 +260,7 @@ class PartnerLogosPlugin extends GenericPlugin
         $contextData = collect([
             'about',
             'additionalHomeContent',
+            'editorialHistory',
             'pageFooter',
         ]);
 
