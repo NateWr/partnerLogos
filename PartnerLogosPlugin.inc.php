@@ -244,11 +244,17 @@ class PartnerLogosPlugin extends GenericPlugin
             $context->_data[$key] = $newValue;
         });
 
-        // We need to update the $pageFooter variable in the
-        // TemplateManager, because it was already assigned.
-        $pageFooter = (string) $templateMgr->get_template_vars('pageFooter');
-        if (str_contains($pageFooter, $this->getPlaceholder())) {
-            $templateMgr->assign('pageFooter', $this->renderLogos($pageFooter, $context));
+        // Update variables that have already been assigned to
+        // the TemplateManager
+        $templateVars = [
+            'additionalHomeContent',
+            'pageFooter',
+        ];
+        foreach ($templateVars as $templateVar) {
+            $value = (string) $templateMgr->get_template_vars($templateVar);
+            if (str_contains($value, $this->getPlaceholder())) {
+                $templateMgr->assign($templateVar, $this->renderLogos($value, $context));
+            }
         }
 
         $templateMgr->assign('currentContext', $context);
