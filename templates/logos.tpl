@@ -44,6 +44,7 @@
         <img
           class="pl-partner-logo-img"
           src="{url page="libraryFiles" op="downloadPublic" path=$partnerLogo->getId()}"
+          alt="{$partnerLogo->getLocalizedData('description')|escape|default:""}"
         >
       {if $name|substr:0:4 === 'http'}
         </a>
