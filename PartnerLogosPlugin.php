@@ -21,7 +21,7 @@ use PKP\plugins\Hook;
 class PartnerLogosPlugin extends GenericPlugin
 {
 
-    public const LIBRARY_FILE_TYPE_PARTNER = 0x00101;
+    public const LIBRARY_FILE_TYPE_PARTNER = 0x00011;
     public const VARIABLE = 'partnerLogos';
 
     public function getDisplayName()
