@@ -4,6 +4,7 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      overflow: hidden; /* Chrome bug */
     }
     .pl-partner-logo-link {
       text-decoration: none;
