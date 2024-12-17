@@ -1,0 +1,37 @@
+on: [push, pull_request]
+name: partnerLogos
+jobs:
+  partnerLogos:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - application: ojs
+            php-version: 8.1
+            database: mysql
+          - application: ojs
+            php-version: 8.1
+            database: psql
+          - application: ojs
+            php-version: 8.2
+            database: mysql
+          - application: ojs
+            php-version: 8.2
+            database: psql
+          - application: ojs
+            php-version: 8.3
+            database: mysql
+          - application: ojs
+            php-version: 8.3
+            database: psql
+
+    name: partnerLogos
+    steps:
+      - uses: pkp/pkp-github-actions@v1
+        with:
+          node_version: 20
+          branch: main
+          repository: pkp
+          plugin: true
+          dataset_inject: true
