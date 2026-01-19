@@ -1,0 +1,8 @@
+msgid "plugins.generic.partnerLogos.displayName"
+msgstr "Partner Logos"
+
+msgid "plugins.generic.partnerLogos.description"
+msgstr "Laden Sie Logos von Partnern in die Bibliothek hoch und zeigen Sie sie auf Ihrer Seite an."
+
+msgid "plugins.generic.partnerLogos.fileType"
+msgstr "Partner Logos"
