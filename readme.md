@@ -22,6 +22,21 @@ After activating the plugin, follow these steps to show partner logos on your jo
    4. Settings > Website > Appearance > Advanced > Additional Content
    5. Or add it to a custom page at Settings > Website > Setup > Navigation > Add Item.
 
+## Package and Release
+
+Update the version and date in the `version.xml` file.
+
+```
+<release>[version]</release>
+<date>[YYYY-MM-DD]</date>
+```
+
+Create a `.tar.gz` package of this plugin by running the following command in the directory above the plugin.
+
+```
+tar -czf partnerLogos-<version>.tar.gz --exclude-ignore=.tarignore partnerLogos
+```
+
 ## Credits
 
 This plugin was created thanks to funding from SLUB Dresden for the [Individualize Theme by Publia](https://github.com/NateWr/individualizeTheme).
