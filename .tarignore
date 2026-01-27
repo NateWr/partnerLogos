@@ -1,3 +1,7 @@
 .git
 .gitignore
 .tarignore
+
+# Tests
+.github
+cypress
