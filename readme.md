@@ -8,7 +8,7 @@ A plugin for [OJS](https://pkp.sfu.ca/software/ojs/), [OMP](https://pkp.sfu.ca/s
 
 This plugin adds a new category to the **Publisher Library** for Partner Logos.
 
-![Screenshot of the Publisher Library](./screenshot.png)
+![Screenshot of the Publisher Library](./screenshot-settings.png)
 
 After activating the plugin, follow these steps to show partner logos on your journal.
 
