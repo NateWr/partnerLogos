@@ -1,6 +1,6 @@
 # Partner Logos
 
-A plugin for [OJS](https://pkp.sfu.ca/software/ojs/), [OMP](https://pkp.sfu.ca/software/omp/) or [OPS](https://pkp.sfu.ca/software/ops/) to display a gallery of logos from partners or supporting organizations.
+A plugin for [OJS](https://pkp.sfu.ca/software/ojs/), [OMP](https://pkp.sfu.ca/software/omp/) or [OPS](https://pkp.sfu.ca/software/ops/) 3.3.0-20+ to display a gallery of logos from partners or supporting organizations.
 
 ![Screenshot of a collection of logos](./screenshot.png)
 
