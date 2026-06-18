@@ -54,7 +54,6 @@ class PartnerLogosPlugin extends GenericPlugin implements HasHomepageBlocks
 
     public function registerHomepageBlocks(HomepageBlocksRegistry $blocks): void
     {
-        error_log('hi2');
         $context = Application::get()->getRequest()->getContext();
         if (!$context) {
             return;
