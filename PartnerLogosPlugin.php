@@ -17,8 +17,11 @@ use PKP\context\LibraryFileDAO;
 use PKP\db\DAORegistry;
 use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
+use PKP\plugins\interfaces\HasHomepageBlocks;
+use PKP\view\HomepageBlock;
+use PKP\view\HomepageBlocksRegistry;
 
-class PartnerLogosPlugin extends GenericPlugin
+class PartnerLogosPlugin extends GenericPlugin implements HasHomepageBlocks
 {
 
     public const LIBRARY_FILE_TYPE_PARTNER = 0x00011;
@@ -47,6 +50,26 @@ class PartnerLogosPlugin extends GenericPlugin
         Hook::add('TemplateManager::display', [$this, 'renderLogosInTemplates']);
 
         return true;
+    }
+
+    public function registerHomepageBlocks(HomepageBlocksRegistry $blocks): void
+    {
+        error_log('hi2');
+        $context = Application::get()->getRequest()->getContext();
+        if (!$context) {
+            return;
+        }
+
+        $blocks->register(
+            new HomepageBlock(
+                component: 'partnerlogosplugin::homepage.partner-logos',
+                title: __('plugins.generic.partnerLogos.displayName'),
+                loader: function () use ($context) {
+                    view()->share('partnerLogos', $this->getFiles($context->getId()));
+                    view()->share('partnerLogosHtml', $this->getHtml($context));
+                }
+            )
+        );
     }
 
     /**
